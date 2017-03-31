@@ -101,7 +101,10 @@ class _PriorityQueue(_Fringe):
 
 def _move_seq(node):
     """Return the list of moves to get to this _Node."""
-    return [] #todo
+    rtn = []
+    while node.get_parent() is not None:
+        rtn.append(node.get_move())
+        node = node.get_parent()
 
 
 def _search(problem, fringe_cls):

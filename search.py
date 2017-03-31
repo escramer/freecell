@@ -105,6 +105,7 @@ def _move_seq(node):
     while node.get_parent() is not None:
         rtn.append(node.get_move())
         node = node.get_parent()
+    return list(reversed(rtn))
 
 
 def _search(problem, fringe_cls):
