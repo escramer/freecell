@@ -103,4 +103,4 @@ def _search(problem, fringe_cls):
     """Return a sequence of moves that goes towards the solution.
     If no solution exists, return None.
     """
-
+    pass #todo

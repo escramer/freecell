@@ -99,8 +99,30 @@ class _PriorityQueue(_Fringe):
         return self._queue.empty()
 
 
+def _move_seq(node):
+    """Return the list of moves to get to this _Node."""
+    return [] #todo
+
+
 def _search(problem, fringe_cls):
     """Return a sequence of moves that goes towards the solution.
     If no solution exists, return None.
     """
-    pass #todo
+    closed = set()
+    fringe = fringe_cls()
+    fringe.push(_Node(problem.initial_state(), problem))
+
+    while True:
+        if fringe.is_empty():
+            return None
+
+        node = fringe.pop()
+        state = node.get_state()
+        if problem.is_goal(state):
+            return _move_seq(node)
+
+        if state not in closed:
+            closed.add(state)
+            for next_state in problem.next_states(state):
+                fringe.push(_Node(next_state, problem))
+            
