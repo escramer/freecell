@@ -35,7 +35,10 @@ class _Node:
 
 
 class Problem:
-    """Represents a problem."""
+    """Represents a problem.
+
+    A subclass must have states that are hashable.
+    """
 
     def initial_state(self):
         """Return the initial state."""
