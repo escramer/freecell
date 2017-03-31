@@ -5,7 +5,7 @@ from Queue import PriorityQueue
 class _Node:
     """Represents a node in the search problem."""
 
-    def __init__(self, state, problem, parent_node=None, move=None):
+    def __init__(self, state, parent_node=None, move=None):
         """Initialize a new node.
 
         The parent node is the node that generates this state.
@@ -14,7 +14,6 @@ class _Node:
         self._state = state
         self._parent = parent_node
         self._move = move
-        self._problem = problem
         if parent_node is None:
             self._step_cost = 0
         else:
@@ -31,7 +30,7 @@ class _Node:
 
     def get_cost(self):
         """Return the total cost (step + heuristic)."""
-        return self._step_cost + self._problem.heuristic(self._state)
+        return self._step_cost + self._state
 
 
 class Problem:
@@ -87,7 +86,7 @@ class _PriorityQueue(_Fringe):
         self._queue = PriorityQueue()
 
     def push(self, node):
-        self._queue.put((node.get_cost(), node))
+        self._queue.put((node.get_state().get_cost(), node))
 
     def pop(self):
         return self._queue.get(False)[1]
@@ -99,5 +98,4 @@ class _PriorityQueue(_Fringe):
 def _search(problem, fringe_cls):
     """Return a sequence of moves that goes towards the solution.
     If no solution exists, return None.
-    """
-    pass #todo
+        
