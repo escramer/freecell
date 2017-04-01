@@ -76,16 +76,26 @@ class Card:
 
 
 class FreeCellState:
-    pass #todo
-
-
-class FreeCell(Problem):
     def __init__(self, filename):
-        """Read in a FreeCell game."""
         pass #todo
 
+    def get_foundations(self):
+        """Return the foundations as a tuple of 4 integers.
+
+        The value at index n refers to SUITS[n]. The value
+        refers to the maximum rank on the foundation. If 0,
+        the foundation is empty.
+        """
+        return (0,) * 4 #todo
+
+
+class FreeCellProblem(Problem):
+    def __init__(self, filename):
+        """Read in a FreeCell game."""
+        self._init_state = FreeCellState(filename)
+
     def initial_state(self):
-        return None #todo
+        return self._init_state
 
     def is_goal(self, state):
         return False #todo
