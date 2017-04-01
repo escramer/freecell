@@ -12,11 +12,9 @@ SUITS = ('h', 'd', 'c', 's')
 class Pile:
     def __init__(self):
         self._pile = []
-        self._str = ''
 
     def push(self, card):
         self._pile.append(card)
-        self._str += str(card)
 
     def empty(self):
         """Return whether or not the pile is empty."""
@@ -24,11 +22,16 @@ class Pile:
 
     def pop(self):
         rtn = self._pile.pop()
-        self._str = self._str[:-2]
 
     def __str__(self):
-        return self._str
+        return ''.join(str(card) for card in self._pile)
 
+    def __hash__(self):
+        return hash(self.__str__())
+
+    def __eq__(self, other):
+        return self._pile == other._pile
+        
 
 class Card:
     def __init__(self, card_str):
@@ -64,6 +67,9 @@ class Card:
 
     def __str__(self):
         return self._str
+
+    def __eq__(self, other):
+        return self._suit == other._suit and self._rank == other._rank
 
 
 class FreeCellState:
