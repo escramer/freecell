@@ -71,6 +71,9 @@ class Card:
     def __eq__(self, other):
         return self._suit == other._suit and self._rank == other._rank
 
+    def __hash__(self):
+        return hash((self._suit, self._rank))
+
 
 class FreeCellState:
     pass #todo
