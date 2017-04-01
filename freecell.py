@@ -6,6 +6,19 @@ import argparse
 
 from search import Problem, astar
 
+HEART = 0
+DIAMOND = 1
+CLUB = 2
+SPADE = 3
+
+
+class Card:
+    pass #todo
+
+
+class FreeCellState:
+    pass #todo
+
 
 class FreeCell(Problem):
     def __init__(self, filename):
