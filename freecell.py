@@ -9,6 +9,27 @@ from search import Problem, astar
 SUITS = ('h', 'd', 'c', 's')
 
 
+class Pile:
+    def __init__(self):
+        self._pile = []
+        self._str = ''
+
+    def push(self, card):
+        self._pile.append(card)
+        self._str += str(card)
+
+    def empty(self):
+        """Return whether or not the pile is empty."""
+        return len(self._pile) == 0
+
+    def pop(self):
+        rtn = self._pile.pop()
+        self._str = self._str[:-2]
+
+    def __str__(self):
+        return self._str
+
+
 class Card:
     def __init__(self, card_str):
         """Initialize from the 2-character card string.
