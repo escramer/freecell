@@ -52,7 +52,7 @@ class Card:
         self._str = card_str
         card_str = card_str.lower()
         if not self.is_card_str(card_str):
-            raise ValueError('Incorrect card string: %s' % card_str)
+            raise ValueError('Incorrect card string: %s' % self._str)
         self._suit = SUITS.index(card_str[1])
         self._is_red = self._suit < 2
         self._rank = self._ranks[card_str[0]]
