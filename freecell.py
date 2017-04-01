@@ -13,7 +13,24 @@ SPADE = 3
 
 
 class Card:
-    pass #todo
+    def __init__(self, card_str):
+        """Initialize from the 2-character card string.
+
+        Letters are allowed to be upper or lower case.
+        """
+        pass #todo
+
+    @property
+    def suit(self):
+        return self._suit
+
+    @property
+    def rank(self):
+        return self._rank
+
+    def is_red(self):
+        """Return True if the card is red; return False if it's black."""
+        return self._is_red
 
 
 class FreeCellState:
