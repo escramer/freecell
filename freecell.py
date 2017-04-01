@@ -6,10 +6,7 @@ import argparse
 
 from search import Problem, astar
 
-HEART = 0
-DIAMOND = 1
-CLUB = 2
-SPADE = 3
+SUITS = ('h', 'd', 'c', 's')
 
 
 class Card:
@@ -18,19 +15,34 @@ class Card:
 
         Letters are allowed to be upper or lower case.
         """
-        pass #todo
+        self._str = card_str
+        card_str = card_str.lower()
+        self._suit = SUITS.index(card_str[1])
+        self._is_red = self._suit < 2
+        rank_str = card_str[0]
+        if rank_str.isdigit():
+            self._rank = int(rank_str)
+        else:
+            self._rank = {'a': 1, 't': 10, 'j': 11, 'q': 12, 'k': 13}[rank_str]
 
     @property
     def suit(self):
+        """The numbered suit (from SUITS)"""
         return self._suit
 
     @property
     def rank(self):
+        """Should return a number for the rank (e.g. Ace is 1, and King is 
+        13)
+        """
         return self._rank
 
     def is_red(self):
         """Return True if the card is red; return False if it's black."""
         return self._is_red
+
+    def __str__(self):
+        return self._str
 
 
 class FreeCellState:
