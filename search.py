@@ -131,4 +131,11 @@ def _search(problem, fringe_cls):
                 fringe.push(_Node(
                         next_state, problem, parent_node=node, move=move
                 ))
+
+
+def astar(problem):
+    """Return a sequence of moves that goes towards the solution.
+    If no solution exists, return None.
+    """
+    return _search(problem, _PriorityQueue)
             
