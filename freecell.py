@@ -31,9 +31,19 @@ class Pile:
 
     def __eq__(self, other):
         return self._pile == other._pile
+
+
+def get_ranks():
+    """Return a dictionary mapping a lower case character to its integer rank."""
+    rtn = {'a': 1, 't': 10, 'j': 11, 'q': 12, 'k': 13}
+    for num in xrange(2, 10):
+        rtn[str(num)] = num
+    return rtn
         
 
 class Card:
+    _ranks = get_ranks()
+
     def __init__(self, card_str):
         """Initialize from the 2-character card string.
 
@@ -41,13 +51,16 @@ class Card:
         """
         self._str = card_str
         card_str = card_str.lower()
+        if not self.is_card_str(card_str):
+            raise ValueError('Incorrect card string: %s' % card_str)
         self._suit = SUITS.index(card_str[1])
         self._is_red = self._suit < 2
-        rank_str = card_str[0]
-        if rank_str.isdigit():
-            self._rank = int(rank_str)
-        else:
-            self._rank = {'a': 1, 't': 10, 'j': 11, 'q': 12, 'k': 13}[rank_str]
+        self._rank = self._ranks[card_str[0]]
+
+    @staticmethod
+    def is_card_str(str_):
+        return isinstance(str_, str) and len(str_) == 2 and \
+            str_[1].lower() in SUITS and str_[0].lower() in self._ranks
 
     @property
     def suit(self):
