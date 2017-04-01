@@ -127,6 +127,8 @@ def _search(problem, fringe_cls):
 
         if state not in closed:
             closed.add(state)
-            for next_state in problem.next_states(state):
-                fringe.push(_Node(next_state, problem))
+            for next_state, move in problem.next_states(state):
+                fringe.push(_Node(
+                        next_state, problem, parent_node=node, move=move
+                ))
             
