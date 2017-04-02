@@ -22,7 +22,7 @@ class Pile:
         return len(self._pile) == 0
 
     def pop(self):
-        rtn = self._pile.pop()
+        return self._pile.pop()
 
     def __str__(self):
         return ''.join(str(card) for card in self._pile)
