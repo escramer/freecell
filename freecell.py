@@ -91,7 +91,12 @@ class Card:
 
 class FreeCellState:
     def __init__(self, filename):
+
+#        The value at index n refers to SUITS[n]. The value
+#        refers to the maximum rank on the foundation. If 0,
+#        the foundation is empty.
         self._foundations = [0] * 4
+
         self._freecells = set()
         self._tableau = set()
 
@@ -102,14 +107,8 @@ class FreeCellState:
                     pile.push(Card(card_str))
                 self._tableau.add(pile)
 
-    def get_foundations(self):
-        """Return the foundations as a tuple of 4 integers.
-
-        The value at index n refers to SUITS[n]. The value
-        refers to the maximum rank on the foundation. If 0,
-        the foundation is empty.
-        """
-        return (0,) * 4 #todo
+        
+        
 
 
 class FreeCellProblem(Problem):
