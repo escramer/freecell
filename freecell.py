@@ -82,7 +82,7 @@ class Card:
 
         Letters are allowed to be upper or lower case.
         """
-        return cls(*_card_map.str_to_int(card_str))
+        return cls(*cls._card_map.str_to_int(card_str))
 
     @property
     def suit(self):
