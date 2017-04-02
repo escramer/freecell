@@ -2,6 +2,7 @@
 
 """A Freecell problem"""
 
+import csv
 import argparse
 
 from search import Problem, astar
@@ -90,7 +91,16 @@ class Card:
 
 class FreeCellState:
     def __init__(self, filename):
-        pass #todo
+        self._foundations = [0] * 4
+        self._freecells = set()
+        self._tableau = set()
+
+        with open(filename) as file_obj:
+            for row in csv.reader(file_obj):
+                pile = Pile()
+                for card_str in row:
+                    pile.push(Card(card_str))
+                self._tableau.add(pile)
 
     def get_foundations(self):
         """Return the foundations as a tuple of 4 integers.
