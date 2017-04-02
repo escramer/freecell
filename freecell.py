@@ -7,7 +7,7 @@ import argparse
 
 from search import Problem, astar
 
-SUITS = ('h', 'd', 'c', 's')
+SUITS = ('H', 'D', 'C', 'S')
 
 
 class Pile:
@@ -32,45 +32,51 @@ class Pile:
 
     def __eq__(self, other):
         return self._pile == other._pile
-
-
-def get_ranks():
-    """Return a dictionary mapping a lower case character to its integer rank."""
-    rtn = {'a': 1, 't': 10, 'j': 11, 'q': 12, 'k': 13}
-    for num in xrange(2, 10):
-        rtn[str(num)] = num
-    return rtn
         
 
 class Card:
-    _ranks = get_ranks()
+    class _CardMap(object):
+        """Maps a card string to its pair of integers."""
+        
+        def __init__(self):
+            pass #todo
 
-    def __init__(self, card_str):
-        """Initialize from the 2-character card string.
+        def str_to_int(self, card_str):
+            """Return the integer pair representing this card string.
+
+            card_str is a two-character string representing the card.
+            Letters may be upper or lower case.
+            """
+            return (0, 0) #todo
+
+        def int_to_str(self, rank, suit):
+            """Return the string representing this card.
+            """
+            return 'AH' #todo
+
+            
+    def __init__(self, rank, suit):
+        """Suit and rank are integers."""
+        self._suit = suit
+        self._rank = rank
+        self._is_red = suit < 2
+
+    @classmethod
+    def from_str(cls, card_str):
+        """Return a Card from the 2-character card string.
 
         Letters are allowed to be upper or lower case.
         """
-        self._str = card_str
-        card_str = card_str.lower()
-        if not self.is_card_str(card_str):
-            raise ValueError('Incorrect card string: %s' % self._str)
-        self._suit = SUITS.index(card_str[1])
-        self._is_red = self._suit < 2
-        self._rank = self._ranks[card_str[0]]
-
-    @staticmethod
-    def is_card_str(str_):
-        return isinstance(str_, str) and len(str_) == 2 and \
-            str_[1].lower() in SUITS and str_[0].lower() in self._ranks
+        return cls(*_card_map.str_to_int(card_str))
 
     @property
     def suit(self):
-        """The numbered suit (from SUITS)"""
+        """Return the numbered suit (from SUITS)"""
         return self._suit
 
     @property
     def rank(self):
-        """Should return a number for the rank (e.g. Ace is 1, and King is 
+        """Return a number for the rank (e.g. Ace is 1, and King is 
         13)
         """
         return self._rank
@@ -80,13 +86,15 @@ class Card:
         return self._is_red
 
     def __str__(self):
-        return self._str
+        return self._card_map.int_to_str(self._rank, self._suit)
 
     def __eq__(self, other):
         return self._suit == other._suit and self._rank == other._rank
 
     def __hash__(self):
         return hash((self._suit, self._rank))
+
+    _card_map = _CardMap()
 
 
 class FreeCellState:
