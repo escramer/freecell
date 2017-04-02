@@ -39,7 +39,22 @@ class Card:
         """Maps a card string to its pair of integers."""
         
         def __init__(self):
-            pass #todo
+            ranks = ['A']
+            for rank in xrange(2, 10):
+                ranks.append(str(rank))
+            ranks += ['T', 'J', 'Q', 'K']
+            
+            int_to_str = {}
+            str_to_int = {}
+            for rank_num, rank_name in enumerate(ranks, start=1):
+                for suit_num, suit_name in enumerate(SUITS):
+                    pair = (rank_num, suit_num)
+                    card_name = rank_name + suit_name
+                    int_to_str[pair] = card_name
+                    str_to_int[card_name] = pair
+
+            self._int_to_str = int_to_str
+            self._str_to_int = str_to_int
 
         def str_to_int(self, card_str):
             """Return the integer pair representing this card string.
@@ -47,12 +62,12 @@ class Card:
             card_str is a two-character string representing the card.
             Letters may be upper or lower case.
             """
-            return (0, 0) #todo
+            return self._str_to_int[card_str.upper()]
 
         def int_to_str(self, rank, suit):
             """Return the string representing this card.
             """
-            return 'AH' #todo
+            return self._int_to_str[(rank, suit)]
 
             
     def __init__(self, rank, suit):
