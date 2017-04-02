@@ -8,6 +8,7 @@ import argparse
 from search import Problem, astar
 
 SUITS = ('H', 'D', 'C', 'S')
+MAX_RANK = 13
 
 
 class Pile:
@@ -112,9 +113,9 @@ class Card:
     _card_map = _CardMap()
 
 
-class FreeCellState:
+class FreeCellState(object):
     def __init__(self, filename):
-
+        """Return a new state from this csv file."""
 #        The value at index n refers to SUITS[n]. The value
 #        refers to the maximum rank on the foundation. If 0,
 #        the foundation is empty.
@@ -130,10 +131,19 @@ class FreeCellState:
                     pile.push(Card(card_str))
                 self._tableau.add(pile)
 
-        
-        
+    def is_goal(self):
+        """Return whether or not we have won!"""
+        return self._foundations == [MAX_RANK] * 4
 
+    def heuristic(self):
+        """Return a heuristic."""
+        return 0 #todo
 
+    def next_states(self):
+        """Return a list of (state, move) pairs."""
+        return [] #todo
+
+        
 class FreeCellProblem(Problem):
     def __init__(self, filename):
         """Read in a FreeCell game."""
