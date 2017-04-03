@@ -137,7 +137,7 @@ class FreeCellState(object):
                 self._tableau.add(pile)
 
     def is_goal(self):
-        """Return whether or not we have won!"""
+        """Return whether or not we have won."""
         return self._foundations == [MAX_RANK] * 4
 
     def heuristic(self):
