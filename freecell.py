@@ -212,13 +212,13 @@ class FreeCellProblem(Problem):
         return self._init_state
 
     def is_goal(self, state):
-        return False #todo
+        return state.is_goal()
 
     def next_states(self, state):
-        return [] #todo
+        return state.next_states()
 
     def heuristic(self, state):
-        return 0 #todo
+        return state.heuristic()
 
 def main():
     parser = argparse.ArgumentParser()
