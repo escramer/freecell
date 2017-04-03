@@ -128,7 +128,7 @@ class FreeCellState(object):
             for row in csv.reader(file_obj):
                 pile = Pile()
                 for card_str in row:
-                    pile.push(Card(card_str))
+                    pile.push(Card.from_str(card_str))
                 self._tableau.add(pile)
 
     def is_goal(self):
