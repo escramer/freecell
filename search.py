@@ -5,11 +5,15 @@ from Queue import PriorityQueue
 class _Node:
     """Represents a node in the search problem."""
 
-    def __init__(self, state, problem, parent_node=None, move=None):
+    def __init__(
+        self, state, problem, parent_node=None, move=None, cost=1
+    ):
         """Initialize a new node.
 
         The parent node is the node that generates this state.
         Use None if this is the root node.
+        move is the move that is done to go from the parent_node
+        to this node (this is only to be displayed).
         """
         self._state = state
         self._parent = parent_node
@@ -18,7 +22,7 @@ class _Node:
         if parent_node is None:
             self._step_cost = 0
         else:
-            self._step_cost = parent_node._step_cost + 1
+            self._step_cost = parent_node._step_cost + cost
 
     def get_state(self):
         return self._state
@@ -49,8 +53,9 @@ class Problem:
         raise NotImplementedError
 
     def next_states(self, state):
-        """Return a list of (state, move) pairs that can be expanded from this
-        state.
+        """Return a list of (state, move, cost) pairs that can be expanded from 
+        this state. Cost should be an integer. A move could be a descriptive
+        string.
         """
         raise NotImplementedError
 
@@ -127,9 +132,9 @@ def _search(problem, fringe_cls):
 
         if state not in closed:
             closed.add(state)
-            for next_state, move in problem.next_states(state):
+            for next_state, move, cost in problem.next_states(state):
                 fringe.push(_Node(
-                        next_state, problem, parent_node=node, move=move
+                    next_state, problem, parent_node=node, move=move, cost=cost
                 ))
 
 
