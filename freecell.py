@@ -2,6 +2,7 @@
 
 """A Freecell problem"""
 
+from copy import deepcopy
 import csv
 import argparse
 
@@ -109,6 +110,9 @@ class Card:
 
     def __hash__(self):
         return hash((self._suit, self._rank))
+
+    def __deepcopy__(self, _):
+        return self
 
     _card_map = _CardMap()
 
