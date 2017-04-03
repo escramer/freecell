@@ -144,9 +144,21 @@ class FreeCellState(object):
         """Return a heuristic."""
         return DECK_SIZE - sum(self._foundations)
 
+    def _trivial_next_state(self):
+        """Return a (state, move, cost) tuple for obvious moves. If there
+        are no obvious moves, return None.
+        """
+        return None #todo
+
     def next_states(self):
-        """Return a list of (state, move) pairs."""
-        return [] #todo
+        """Return a list of (state, move, cost) pairs."""
+        trivial_pair = self._trivial_next_state()
+        if trivial_pair is not None:
+            return [trivial_pair]
+
+        
+
+        #todo
 
         
 class FreeCellProblem(Problem):
