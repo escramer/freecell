@@ -10,6 +10,7 @@ from search import Problem, astar
 
 SUITS = ('H', 'D', 'C', 'S')
 MAX_RANK = 13
+DECK_SIZE = 52
 
 
 class Pile:
@@ -141,7 +142,7 @@ class FreeCellState(object):
 
     def heuristic(self):
         """Return a heuristic."""
-        return 0 #todo
+        return DECK_SIZE - sum(self._foundations)
 
     def next_states(self):
         """Return a list of (state, move) pairs."""
