@@ -150,15 +150,57 @@ class FreeCellState(object):
         """
         return None #todo
 
+    def _tableau_to_foundations(self):
+        """Return a list of (state, move, cost) tuples from the tableau to the
+        foundations.
+        """
+        return [] #todo
+
+    def _foundations_to_tableau(self):
+        """Return a list of (state, move, cost) tuples from the foundations to
+        the tableau.
+        """
+        return [] #todo
+
+    def _tableau_moves(self):
+        """Return a list of (state, move, cost) tuples from moving cards within
+        the tableau.
+        """
+        return [] #todo
+
+    def _tableau_to_free(self):
+        """Return a list of (state, move, cost) tuples from moving cards from
+        the tableau to the free cells.
+        """
+        return [] #todo
+
+    def _free_to_tableau(self):
+        """Return a list of (state, move, cost) tuples from moving cards from
+        the free cells to the tableau.
+        """
+        return [] #todo
+
+    def _free_to_foundations(self):
+        """Return a list of (state, move, cost) tuples from moving cards from
+        the free cells to the foundations.
+        """
+        return [] #todo
+
     def next_states(self):
-        """Return a list of (state, move, cost) pairs."""
+        """Return a list of (state, move, cost) tuples."""
         trivial_pair = self._trivial_next_state()
         if trivial_pair is not None:
             return [trivial_pair]
 
-        
+        rtn = []
+        rtn += self._tableau_to_foundations()
+        rtn += self._foundations_to_tableau()
+        rtn += self._tableau_moves()
+        rtn += self._tableau_to_free()
+        rtn += self._free_to_tableau()
+        rtn += self._free_to_foundations()
 
-        #todo
+        return rtn
 
         
 class FreeCellProblem(Problem):
