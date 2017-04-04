@@ -186,6 +186,18 @@ class FreeCellState(object):
         """
         return [] #todo
 
+    def __hash__(self):
+        return hash((
+            hash(frozenset(self._freecells)), 
+            hash(tuple(self._foundations)), 
+            hash(frozenset(str(pile) for pile in self._tableau))
+        ))
+
+    def __eq__(self, other):
+        return self._foundations == other._foundations and \
+            self._tableau == other._tableau and \
+            self._freecells == other._freecells
+
     def next_states(self):
         """Return a list of (state, move, cost) tuples."""
         trivial_pair = self._trivial_next_state()
