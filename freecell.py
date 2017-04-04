@@ -27,6 +27,10 @@ class Pile:
     def pop(self):
         return self._pile.pop()
 
+    def top(self):
+        """Return the top-most card."""
+        return self._pile[-1]
+
     def __str__(self):
         return ''.join(str(card) for card in self._pile)
 
