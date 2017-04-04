@@ -11,34 +11,6 @@ from search import Problem, astar
 SUITS = ('H', 'D', 'C', 'S')
 MAX_RANK = 13
 DECK_SIZE = 52
-
-
-class Pile:
-    def __init__(self):
-        self._pile = []
-
-    def push(self, card):
-        self._pile.append(card)
-
-    def empty(self):
-        """Return whether or not the pile is empty."""
-        return len(self._pile) == 0
-
-    def pop(self):
-        return self._pile.pop()
-
-    def top(self):
-        """Return the top-most card."""
-        return self._pile[-1]
-
-    def __str__(self):
-        return ''.join(str(card) for card in self._pile)
-
-    def __hash__(self):
-        return hash(self.__str__())
-
-    def __eq__(self, other):
-        return self._pile == other._pile
         
 
 class Card:
@@ -135,10 +107,10 @@ class FreeCellState(object):
 
         with open(filename) as file_obj:
             for row in csv.reader(file_obj):
-                pile = Pile()
+                pile = []
                 for card_str in row:
-                    pile.push(Card.from_str(card_str))
-                self._tableau.add(pile)
+                    pile.append(Card.from_str(card_str))
+                self._tableau.add(tuple(pile))
 
     def is_goal(self):
         """Return whether or not we have won."""
@@ -191,11 +163,11 @@ class FreeCellState(object):
         return [] #todo
 
     def __hash__(self):
-        return hash((
-            hash(frozenset(self._freecells)), 
-            hash(tuple(self._foundations)), 
-            hash(frozenset(str(pile) for pile in self._tableau))
-        ))
+        return hash(
+            frozenset(self._freecells), 
+            tuple(self._foundations), 
+            frozenset(self._tableau)
+        )
 
     def __eq__(self, other):
         return self._foundations == other._foundations and \
