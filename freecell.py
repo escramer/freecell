@@ -11,6 +11,18 @@ from search import Problem, astar
 SUITS = ('H', 'D', 'C', 'S')
 MAX_RANK = 13
 DECK_SIZE = 52
+
+
+class Tableau(object):
+    def __init__(self, filename):
+        """Initialize the tableau from this csv."""
+        self._tableau = set()
+        with open(filename) as file_obj:
+            for row in csv.reader(file_obj):
+                pile = []
+                for card_str in row:
+                    pile.append(Card.from_str(card_str))
+                self._tableau.add(tuple(pile))
         
 
 class Card:
@@ -103,14 +115,7 @@ class FreeCellState(object):
         self._foundations = [0] * 4
 
         self._freecells = set() # Set of cards
-        self._tableau = set() # Set of tuples
-
-        with open(filename) as file_obj:
-            for row in csv.reader(file_obj):
-                pile = []
-                for card_str in row:
-                    pile.append(Card.from_str(card_str))
-                self._tableau.add(tuple(pile))
+        self._tableau = Tableau(filename)
 
     def is_goal(self):
         """Return whether or not we have won."""
