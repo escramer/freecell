@@ -2,7 +2,7 @@
 
 """A Freecell problem"""
 
-from copy import deepcopy
+from copy import deepcopy, copy
 import csv
 import argparse
 
@@ -102,8 +102,8 @@ class FreeCellState(object):
 #        the foundation is empty.
         self._foundations = [0] * 4
 
-        self._freecells = set()
-        self._tableau = set()
+        self._freecells = set() # Set of cards
+        self._tableau = set() # Set of tuples
 
         with open(filename) as file_obj:
             for row in csv.reader(file_obj):
@@ -119,6 +119,13 @@ class FreeCellState(object):
     def heuristic(self):
         """Return a heuristic."""
         return DECK_SIZE - sum(self._foundations)
+
+    def __deepcopy__(self, _):
+        rtn = copy(self)
+        rtn._foundations = rtn._foundations[:]
+        rtn._freecells = set(rtn._freecells)
+        rtn._tableau = set(rtn._tableau)
+        return rtn
 
     def _trivial_next_state(self):
         """Return a (state, move, cost) tuple for obvious moves. If there
