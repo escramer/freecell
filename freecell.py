@@ -23,6 +23,9 @@ class Tableau(object):
                 for card_str in row:
                     pile.append(Card.from_str(card_str))
                 self._tableau.add(tuple(pile))
+
+    def __deepcopy__(self, _):
+        return self #todo
         
 
 class Card:
