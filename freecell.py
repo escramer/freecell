@@ -64,15 +64,17 @@ class Card:
     @classmethod
     def from_ranksuit(cls, rank, suit):
         """Return a new Card. rank and suit are integers."""
-        made_card = cls._made_cards.get((rank, suit))
-        if made_card is not None:
-            return made_card
+        pair = (rank, suit)
+        assert pair in cls._made_cards
+        card = cls._made_cards[pair]
+        if card is not None:
+            return card
 
         rtn = cls()
         rtn._suit = suit
         rtn._rank = rank
         rtn._is_red = suit < 2
-        cls._made_cards[(rank, suit)] = rtn
+        cls._made_cards[pair] = rtn
         return rtn
 
     @classmethod
@@ -85,8 +87,14 @@ class Card:
 
     @classmethod
     def missing_cards(cls):
-        """Return the set of cards that were not instantiated."""
-        return set() #todo
+        """Return the set of cards ((rank, suit) pairs) that were not 
+        instantiated.
+        """
+        return set(
+            pair 
+            for pair, card in cls._made_cards.iteritems() 
+            if card is None
+        )
 
     @property
     def suit(self):
@@ -117,10 +125,14 @@ class Card:
         return self
 
     def __copy__(self):
-        return self
+        return self        
 
     _card_map = _CardMap()
-    _made_cards = {} # Maps a (rank, suit) to its Card.
+    _made_cards = {
+        (rank, suit): None 
+        for rank in xrange(1, MAX_RANK+1) 
+        for suit in xrange(len(SUITS))
+    }
 
 
 class FreeCellState(object):
