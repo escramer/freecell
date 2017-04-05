@@ -60,12 +60,20 @@ class Card:
             """
             return self._int_to_str[(rank, suit)]
 
-            
-    def __init__(self, rank, suit):
-        """Suit and rank are integers."""
-        self._suit = suit
-        self._rank = rank
-        self._is_red = suit < 2
+    
+    @classmethod
+    def from_ranksuit(cls, rank, suit):
+        """Return a new Card. rank and suit are integers."""
+        made_card = cls._made_cards.get((rank, suit))
+        if made_card is not None:
+            return made_card
+
+        rtn = cls()
+        rtn._suit = suit
+        rtn._rank = rank
+        rtn._is_red = suit < 2
+        cls._made_cards[(rank, suit)] = rtn
+        return rtn
 
     @classmethod
     def from_str(cls, card_str):
@@ -73,7 +81,7 @@ class Card:
 
         Letters are allowed to be upper or lower case.
         """
-        return cls(*cls._card_map.str_to_int(card_str))
+        return cls.from_ranksuit(*cls._card_map.str_to_int(card_str))
 
     @property
     def suit(self):
@@ -103,7 +111,11 @@ class Card:
     def __deepcopy__(self, _):
         return self
 
+    def __copy__(self):
+        return self
+
     _card_map = _CardMap()
+    _made_cards = {} # Maps a (rank, suit) to its Card.
 
 
 class FreeCellState(object):
