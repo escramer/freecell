@@ -64,7 +64,6 @@ class Card:
     @classmethod
     def from_ranksuit(cls, rank, suit):
         """Return a new Card. rank and suit are integers."""
-        assert 1 <= rank <= MAX_RANK and 0 <= suit < len(SUITS)
         made_card = cls._made_cards.get((rank, suit))
         if made_card is not None:
             return made_card
@@ -85,9 +84,9 @@ class Card:
         return cls.from_ranksuit(*cls._card_map.str_to_int(card_str))
 
     @classmethod
-    def all_cards_made(cls):
-        """Return whether or not all cards were created."""
-        return len(cls._made_cards) == DECK_SIZE
+    def missing_cards(cls):
+        """Return the set of cards that were not instantiated."""
+        return set() #todo
 
     @property
     def suit(self):
