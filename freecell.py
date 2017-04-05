@@ -16,16 +16,36 @@ DECK_SIZE = 52
 class Tableau(object):
     def __init__(self, filename):
         """Initialize the tableau from this csv."""
-        self._tableau = set()
+        self._tableau = {}
         with open(filename) as file_obj:
             for row in csv.reader(file_obj):
                 pile = []
                 for card_str in row:
                     pile.append(Card.from_str(card_str))
-                self._tableau.add(tuple(pile))
+                self._tableau[pile[-1]] = tuple(pile)
 
     def __deepcopy__(self, _):
-        return self #todo
+        rtn = copy(self)
+        rtn._tableau = dict(rtn._tableau)
+        return rtn
+
+    def top_cards(self):
+        """Return the set of cards that are at the top of each pile."""
+        return set(self._tableau)
+
+    def remove(self, card):
+        """Remove this card from the tableau. It should be a card from
+        the top of a pile. card may be a Card or a (rank, suit) tuple.
+        """
+        assert isinstance(card, (Card, tuple))
+        if isinstance(card, tuple):
+            card = Card.from_ranksuit(*card)
+
+        new_pile = self._tableau[card][:-1]
+        del self._tableau[card]
+        if new_pile:
+            self._tableau[new_pile[-1]] = new_pile
+        
         
 
 class Card:
