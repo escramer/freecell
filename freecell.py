@@ -45,6 +45,13 @@ class Tableau(object):
         del self._tableau[card]
         if new_pile:
             self._tableau[new_pile[-1]] = new_pile
+
+    def place(self, new_top_card, old_top_card):
+        """Place new_top_card on top of old_top_card. The cards can be
+        Cards or tuples.
+        """
+        pass #todo
+        
         
         
 
