@@ -46,7 +46,7 @@ class Tableau(object):
             rtn.append(new_tableau)
 
         for top_card in self._tableau:
-            if card.rank == top_card.rank - 1 and Card.opposite(card, top_card):
+            if card.goes_on_top_of(top_card):
                 new_tableau = deepcopy(self)
                 new_tableau._place(card, top_card)
                 rtn.append(new_tableau)
@@ -130,14 +130,6 @@ class Card:
             """
             return self._int_to_str[(rank, suit)]
 
-
-    @staticmethod
-    def opposite(card1, card2):
-        """Return whether or not the cards (Card, string, or tuple) are opposite
-        in color.
-        """
-        return Card.get(card1)._is_red != Card.get(card2)._is_red
-
     
     @classmethod
     def get(cls, info):
@@ -201,6 +193,13 @@ class Card:
         13)
         """
         return self._rank
+
+    def goes_on_top_of(self, other):
+        """Return whether this card can go on top of other (Card, string, or
+        tuple.
+        """
+        other = Card.get(other)
+        return self._rank == other._rank - 1 and self._is_red != other._is_red
 
     def is_red(self):
         """Return True if the card is red; return False if it's black."""
