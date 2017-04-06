@@ -11,6 +11,7 @@ from search import Problem, astar
 SUITS = ('H', 'D', 'C', 'S')
 MAX_RANK = 13
 DECK_SIZE = 52
+NUM_PILES = 8
 
 
 class Tableau(object):
@@ -55,6 +56,16 @@ class Tableau(object):
         pile = self._tableau[old_top_card] + (new_top_card,)
         self._tableau[new_top_card] = pile
         del self._tableau[old_top_card]
+
+    def is_full(self):
+        """Return whether or not the tableau has 8 piles."""
+        return len(self._tableau) == NUM_PILES
+
+    def put_in_new_pile(self, card):
+        """Place this card (Card, string, or tuple) in a new pile."""
+        assert not self.is_full()
+        card = Card.get(card)
+        self._tableau[card] = (card,)
         
 
 class Card:
