@@ -22,7 +22,7 @@ class Tableau(object):
             for row in csv.reader(file_obj):
                 pile = []
                 for card_str in row:
-                    pile.append(Card.from_str(card_str))
+                    pile.append(Card.get(card_str))
                 self._tableau[pile[-1]] = tuple(pile)
 
     def __deepcopy__(self, _):
@@ -36,12 +36,10 @@ class Tableau(object):
 
     def remove(self, card):
         """Remove this card from the tableau. It should be a card from
-        the top of a pile. card may be a Card or a (rank, suit) tuple.
+        the top of a pile. card may be a Card, (rank, suit) tuple, or
+        string.
         """
-        assert isinstance(card, (Card, tuple))
-        if isinstance(card, tuple):
-            card = Card.from_ranksuit(*card)
-
+        card = Card.get(card)
         new_pile = self._tableau[card][:-1]
         del self._tableau[card]
         if new_pile:
@@ -142,7 +140,7 @@ class Card:
 
         Letters are allowed to be upper or lower case.
         """
-        return cls.from_ranksuit(*cls._card_map.str_to_int(card_str))
+        return cls._from_ranksuit(*cls._card_map.str_to_int(card_str))
 
     @classmethod
     def missing_cards(cls):
@@ -259,7 +257,7 @@ class FreeCellState(object):
         return hash(
             frozenset(self._freecells), 
             tuple(self._foundations), 
-            frozenset(self._tableau)
+            frozenset(self._tableau) #todo: fix
         )
 
     def __eq__(self, other):
