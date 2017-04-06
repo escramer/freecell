@@ -30,8 +30,15 @@ class Tableau(object):
         rtn._tableau = dict(rtn._tableau)
         return rtn
 
+    def __contains__(self, item):
+        return item in self._tableau
+
     def piles(self):
-        """Return a copy of the tableau as a dictionary."""
+        """Return a copy of the tableau as a dictionary.
+
+        This maps the top card of each pile to its pile, which
+        is a tuple of cards.
+        """
         return self._tableau.copy()
 
     def remove(self, card):
@@ -258,7 +265,7 @@ class FreeCellState(object):
         return hash(
             frozenset(self._freecells), 
             tuple(self._foundations), 
-            frozenset(self._tableau) #todo: fix
+            frozenset(self._tableau.values())
         )
 
     def __eq__(self, other):
