@@ -43,13 +43,14 @@ class Tableau(object):
         if len(self._tableau) < NUM_PILES:
             new_tableau = deepcopy(self)
             new_tableau._put_in_new_pile(card)
-            rtn.append(new_tableau)
+            rtn.append((new_tableau, 'Put %s in a new pile.' % card))
 
         for top_card in self._tableau:
             if card.goes_on_top_of(top_card):
                 new_tableau = deepcopy(self)
                 new_tableau._place(card, top_card)
-                rtn.append(new_tableau)
+                move = 'Put %s on top of %s.' % (card, top_card)
+                rtn.append((new_tableau, move))
 
         return rtn
 
