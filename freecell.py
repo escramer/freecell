@@ -34,6 +34,26 @@ class Tableau(object):
     def __contains__(self, item):
         return item in self._tableau
 
+    def new_tableaus_from_placing(self, card):
+        """Return (tableau, move) pairs resulting from placing this card
+        in the tableau. card can be a string, tuple, or Card.
+        """
+        rtn = []
+        card = Card.get(card)
+        if len(self._tableau) < NUM_PILES:
+            new_tableau = deepcopy(self)
+            new_tableau._put_in_new_pile(card)
+            rtn.append(new_tableau)
+
+        for top_card in self._tableau:
+            if card.rank == top_card.rank - 1 and Card.opposite(card, top_card):
+                new_tableau = deepcopy(self)
+                new_tableau._place(card, top_card)
+                rtn.append(new_tableau)
+
+        return rtn
+
+
     def piles(self):
         """Return a copy of the tableau as a dictionary.
 
@@ -53,7 +73,7 @@ class Tableau(object):
         if new_pile:
             self._tableau[new_pile[-1]] = new_pile
 
-    def place(self, new_top_card, old_top_card):
+    def _place(self, new_top_card, old_top_card):
         """Place new_top_card on top of old_top_card. The cards can be
         Cards, tuples, or strings.
         """
@@ -67,7 +87,7 @@ class Tableau(object):
         """Return whether or not the tableau has 8 piles."""
         return len(self._tableau) == NUM_PILES
 
-    def put_in_new_pile(self, card):
+    def _put_in_new_pile(self, card):
         """Place this card (Card, string, or tuple) in a new pile."""
         assert not self.is_full()
         card = Card.get(card)
@@ -109,6 +129,14 @@ class Card:
             """Return the string representing this card.
             """
             return self._int_to_str[(rank, suit)]
+
+
+    @staticmethod
+    def opposite(card1, card2):
+        """Return whether or not the cards (Card, string, or tuple) are opposite
+        in color.
+        """
+        return Card.get(card1)._is_red != Card.get(card2)._is_red
 
     
     @classmethod
@@ -230,7 +258,8 @@ class FreeCellState(object):
         """Return a list of (state, move, cost) tuples from the tableau to the
         foundations.
         """
-        return [] #todo
+        rtn = []
+        for 
 
     def _foundations_to_tableau(self):
         """Return a list of (state, move, cost) tuples from the foundations to
