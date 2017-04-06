@@ -30,9 +30,9 @@ class Tableau(object):
         rtn._tableau = dict(rtn._tableau)
         return rtn
 
-    def top_cards(self):
-        """Return the set of cards that are at the top of each pile."""
-        return set(self._tableau)
+    def piles(self):
+        """Return a copy of the tableau as a dictionary."""
+        return self._tableau.copy()
 
     def remove(self, card):
         """Remove this card from the tableau. It should be a card from
@@ -63,6 +63,7 @@ class Tableau(object):
         """Place this card (Card, string, or tuple) in a new pile."""
         assert not self.is_full()
         card = Card.get(card)
+        assert card not in self._tableau
         self._tableau[card] = (card,)
         
 
