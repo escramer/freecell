@@ -48,11 +48,13 @@ class Tableau(object):
 
     def place(self, new_top_card, old_top_card):
         """Place new_top_card on top of old_top_card. The cards can be
-        Cards or tuples.
+        Cards, tuples, or strings.
         """
-        pass #todo
-        
-        
+        new_top_card = Card.get(new_top_card)
+        old_top_card = Card.get(old_top_card)
+        pile = self._tableau[old_top_card] + (new_top_card,)
+        self._tableau[new_top_card] = pile
+        del self._tableau[old_top_card]
         
 
 class Card:
