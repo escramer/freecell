@@ -92,7 +92,23 @@ class Card:
 
     
     @classmethod
-    def from_ranksuit(cls, rank, suit):
+    def get(cls, info):
+        """Return a Card where info describes the card.
+
+        info can be a Card (it'll just be returned), (rank, suit)
+        tuple, or a 2-character card string.
+        """
+        if isinstance(info, Card):
+            return info
+        if isinstance(info, tuple):
+            return cls._from_ranksuit(*info)
+        if isinstance(info, str):
+            return cls._from_str(info)
+        raise Exception('What card is this?: %s' % info)
+
+    
+    @classmethod
+    def _from_ranksuit(cls, rank, suit):
         """Return a new Card. rank and suit are integers."""
         pair = (rank, suit)
         assert pair in cls._made_cards
@@ -108,7 +124,7 @@ class Card:
         return rtn
 
     @classmethod
-    def from_str(cls, card_str):
+    def _from_str(cls, card_str):
         """Return a Card from the 2-character card string.
 
         Letters are allowed to be upper or lower case.
@@ -271,6 +287,7 @@ class FreeCellProblem(Problem):
 
     def heuristic(self, state):
         return state.heuristic()
+
 
 def main():
     parser = argparse.ArgumentParser()
