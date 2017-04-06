@@ -12,6 +12,7 @@ SUITS = ('H', 'D', 'C', 'S')
 MAX_RANK = 13
 DECK_SIZE = 52
 NUM_PILES = 8
+NUM_FREECELLS = 4
 
 
 class Tableau(object):
