@@ -31,9 +31,6 @@ class Tableau(object):
         rtn._tableau = dict(rtn._tableau)
         return rtn
 
-    def __contains__(self, item):
-        return item in self._tableau
-
     def new_tableaus_from_placing(self, card):
         """Return (tableau, move) pairs resulting from placing this card
         in the tableau. card can be a string, tuple, or Card.
@@ -54,16 +51,11 @@ class Tableau(object):
 
         return rtn
 
+    def top_cards(self):
+        """Return the set of cards that are on the top of each pile."""
+        return set(self._tableau)
 
-    def piles(self):
-        """Return a copy of the tableau as a dictionary.
-
-        This maps the top card of each pile to its pile, which
-        is a tuple of cards.
-        """
-        return self._tableau.copy()
-
-    def remove(self, card):
+    def _remove(self, card):
         """Remove this card from the tableau. It should be a card from
         the top of a pile. card may be a Card, (rank, suit) tuple, or
         string.
@@ -83,10 +75,6 @@ class Tableau(object):
         pile = self._tableau[old_top_card] + (new_top_card,)
         self._tableau[new_top_card] = pile
         del self._tableau[old_top_card]
-
-    def is_full(self):
-        """Return whether or not the tableau has 8 piles."""
-        return len(self._tableau) == NUM_PILES
 
     def _put_in_new_pile(self, card):
         """Place this card (Card, string, or tuple) in a new pile."""
@@ -259,7 +247,15 @@ class FreeCellState(object):
         foundations.
         """
         rtn = []
-        for 
+        for card in self._tableau.top_cards():
+            if card.rank == self._foundations[card.suit] + 1:
+                new_tableau = self._tableau.remove(card)
+                new_state = deepcopy(self)
+                new_state._foundations[card.suit] += 1
+                new_state._tableau = new_tableau
+                rtn.append((new_state, 'Move %s to its foundation.' % card, 1))
+
+        return rtn
 
     def _foundations_to_tableau(self):
         """Return a list of (state, move, cost) tuples from the foundations to
