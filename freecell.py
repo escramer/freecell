@@ -265,7 +265,19 @@ class FreeCellState(object):
         """Return a list of (state, move, cost) tuples from the foundations to
         the tableau.
         """
-        return [] #todo
+        rtn = []
+        for suit, rank in enumerate(self._foundations):
+            if rank != 0:
+                for tableau, move in self._tableau.new_tableuas_from_placing(
+                    (rank, suit)
+                ):
+                    new_state = deepcopy(self)
+                    new_state._tableau = tableau
+                    new_state._foundations[suit] -= 1
+                    rtn.append((new_state, move, 1))
+
+        return rtn
+                
 
     def _tableau_moves(self):
         """Return a list of (state, move, cost) tuples from moving cards within
@@ -302,6 +314,12 @@ class FreeCellState(object):
         return self._foundations == other._foundations and \
             self._tableau == other._tableau and \
             self._freecells == other._freecells
+
+    def __deepcopy__(self, _):
+        rtn = copy(self)
+        rtn._foundations = self._foundations[:]
+        rtn._freecells = self._freecells.copy()
+        return rtn
 
     def next_states(self):
         """Return a list of (state, move, cost) tuples."""
