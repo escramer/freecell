@@ -310,6 +310,12 @@ class FreeCellState(object):
         """
         return [] #todo
 
+    def _foundations_to_free(self):
+        """Return a list of (state, move, cost) tuples from moving cards from
+        the foundations to the free cells.
+        """
+        return [] #todo
+
     def __hash__(self):
         return hash(
             frozenset(self._freecells), 
@@ -341,6 +347,7 @@ class FreeCellState(object):
         rtn += self._tableau_to_free()
         rtn += self._free_to_tableau()
         rtn += self._free_to_foundations()
+        rtn += self._foundations_to_free()
 
         return rtn
 
