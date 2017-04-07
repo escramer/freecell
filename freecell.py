@@ -36,7 +36,7 @@ class Tableau(object):
         """
         return [] #todo
 
-    def new_tableaus_from_placing(self, card):
+    def place(self, card):
         """Return (tableau, move) pairs resulting from placing this card
         in the tableau. card can be a string, tuple, or Card.
         """
@@ -277,9 +277,7 @@ class FreeCellState(object):
         rtn = []
         for suit, rank in enumerate(self._foundations):
             if rank != 0:
-                for tableau, move in self._tableau.new_tableuas_from_placing(
-                    (rank, suit)
-                ):
+                for tableau, move in self._tableau.place((rank, suit)):
                     new_state = deepcopy(self)
                     new_state._tableau = tableau
                     new_state._foundations[suit] -= 1
