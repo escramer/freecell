@@ -50,7 +50,7 @@ class Tableau(object):
         for top_card in self._tableau:
             if card.goes_on_top_of(top_card):
                 new_tableau = deepcopy(self)
-                new_tableau._place(card, top_card)
+                new_tableau._place_on_top(card, top_card)
                 move = 'Put %s on top of %s.' % (card, top_card)
                 rtn.append((new_tableau, move))
 
@@ -79,7 +79,7 @@ class Tableau(object):
         new_tableau._remove(card)
         return new_tableau
 
-    def _place(self, new_top_card, old_top_card):
+    def _place_on_top(self, new_top_card, old_top_card):
         """Place new_top_card on top of old_top_card. The cards can be
         Cards, tuples, or strings.
         """
