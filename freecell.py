@@ -60,17 +60,23 @@ class Tableau(object):
         """Return the set of cards that are on the top of each pile."""
         return set(self._tableau)
 
+    def _remove(self, card):
+        """Remove the card (Card, (rank, suit) tuple, or string from this
+        tableau.
+        """
+        card = Card.get(card)
+        new_pile = self._tableau[card][:-1]
+        del self._tableau[card]
+        if new_pile:
+            self._tableau[new_pile[-1]] = new_pile
+
     def remove(self, card):
         """Return a new Tableau with this card removed. The card should be from
         the top of a pile. card may be a Card, (rank, suit) tuple, or
         string.
         """
         new_tableau = deepcopy(self)
-        card = Card.get(card)
-        new_pile = new_tableau._tableau[card][:-1]
-        del new_tableau._tableau[card]
-        if new_pile:
-            new_tableau._tableau[new_pile[-1]] = new_pile
+        new_tableau._remove(card)
         return new_tableau
 
     def _place(self, new_top_card, old_top_card):
