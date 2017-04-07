@@ -31,6 +31,11 @@ class Tableau(object):
         rtn._tableau = dict(rtn._tableau)
         return rtn
 
+    def internal_moves(self):
+        """Return a list of (tableau, move) pairs of moves within the tableau.
+        """
+        return [] #todo
+
     def new_tableaus_from_placing(self, card):
         """Return (tableau, move) pairs resulting from placing this card
         in the tableau. card can be a string, tuple, or Card.
@@ -274,14 +279,18 @@ class FreeCellState(object):
                     new_state._foundations[suit] -= 1
                     rtn.append((new_state, move, 1))
 
-        return rtn
-                
+        return rtn                
 
     def _tableau_moves(self):
         """Return a list of (state, move, cost) tuples from moving cards within
         the tableau.
         """
-        return [] #todo
+        rtn = []
+        for tableau, move in self._tableau.internal_moves():
+            new_state = deepcopy(self)
+            new_state._tableau = tableau
+            rtn.append((new_state, move, 1))
+        return rtn
 
     def _tableau_to_free(self):
         """Return a list of (state, move, cost) tuples from moving cards from
