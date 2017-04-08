@@ -36,25 +36,23 @@ class Tableau(object):
         """
         return [] #todo
 
+    def _place_in_new_pile(self, card):
+        """Return a list of (Tableau, move) pairs (a list of length 0 or 1) 
+        resulting in placing this card in a new pile.
+        """
+        return [] #todo
+
+    def _place_on_a_pile(self, card):
+        """Return a list of (Tableau, move) pairs resulting in placing this
+        card (Card, string, or tuple) on a pile.
+        """
+        return [] #todo
+
     def place(self, card):
         """Return (tableau, move) pairs resulting from placing this card
         in the tableau. card can be a string, tuple, or Card.
         """
-        rtn = []
-        card = Card.get(card)
-        if len(self._tableau) < NUM_PILES:
-            new_tableau = deepcopy(self)
-            new_tableau._put_in_new_pile(card)
-            rtn.append((new_tableau, 'Put %s in a new pile.' % card))
-
-        for top_card in self._tableau:
-            if card.goes_on_top_of(top_card):
-                new_tableau = deepcopy(self)
-                new_tableau._place_on_top(card, top_card)
-                move = 'Put %s on top of %s.' % (card, top_card)
-                rtn.append((new_tableau, move))
-
-        return rtn
+        return self._place_on_a_pile(card) + self._place_in_new_pile(card)
 
     def top_cards(self):
         """Return the set of cards that are on the top of each pile."""
