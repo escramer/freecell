@@ -352,7 +352,19 @@ class FreeCellState(object):
         """Return a list of (state, move, cost) tuples from moving cards from
         the tableau to the free cells.
         """
-        return [] #todo
+        if len(self._freecells) == NUM_FREECELLS:
+            return []
+
+        rtn = []
+
+        for card in self._tableau.top_cards():
+            new_tableau = self._tableau.remove(card)
+            new_state = deepcopy(self)
+            new_state._tableau = new_tableau
+            new_state._freecells.add(card)
+            rtn.append((new_state, 'Put %s in a free cell.' % card, 1))
+
+        return rtn
 
     def _free_to_tableau(self):
         """Return a list of (state, move, cost) tuples from moving cards from
