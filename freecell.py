@@ -5,6 +5,7 @@
 from copy import deepcopy, copy
 import csv
 import argparse
+from itertools import permutations
 
 from search import Problem, astar
 
@@ -34,7 +35,28 @@ class Tableau(object):
     def internal_moves(self):
         """Return a list of (tableau, move) pairs of moves within the tableau.
         """
-        return [] #todo
+        rtn = []
+
+        # Put cards in a new pile
+        if len(self._tableau) < NUM_PILES:
+            for card, pile in self._tableau.iteritems():
+                if len(pile) > 1:
+                    tableau = deepcopy(self)
+                    tableau._remove(card)
+                    tableau._put_in_new_pile(card)
+                    rtn.append((tableau, 'Put %s in a new pile.' % card))
+
+        # Put cards on top of other cards
+        for on_top, on_bottom in permutations(self._tableau, 2):
+            if on_top.goes_on_top_of(on_bottom):
+                tableau = deepcopy(self)
+                tableau._remove(on_top)
+                tableau._put_on_pile(on_bottom, on_top)
+                rtn.append(
+                    (tableau, 'Put %s on top of %s.' % (on_top, on_bottom))
+                )
+
+        return rtn
 
     def _put_in_new_pile(self, card):
         """Put the card (Card, string, or tuple) in a new pile."""
