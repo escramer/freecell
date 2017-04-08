@@ -36,18 +36,38 @@ class Tableau(object):
         """
         return [] #todo
 
-    def _place_in_new_pile(self, card):
+    def _put_in_new_pile(self, card):
+        """Put the card (Card, string, or tuple) in a new pile."""
+        card = Card.get(card)
+        assert card not in self._tableau
+        assert len(self._tableau) < NUM_PILES
+        self._tableau[card] = card,
+
+    def _moves_in_new_pile(self, card):
         """Return a list of (Tableau, move) pairs (a list of length 0 or 1) 
         resulting in placing this card (Card, string, or tuple) in a new pile.
         """
         card = Card.get(card)
-        if len(self._tableau) == NUM_PILES or card in self._tableau:
+        assert card not in self._tableau
+        if len(self._tableau) == NUM_PILES:
             return []
         tableau = deepcopy(self)
-        tableau._tableau[card] = (card,)
-        return [tableau]
+        tableau._put_in_new_pile(card)
+        return [(tableau, 'Put %s in a new pile.' % card)]
 
-    def _place_on_a_pile(self, card):
+    def _put_on_pile(self, old_top_card, new_top_card):
+        """Put the new_top_card on top of the old_top_card. Both cards can
+        be Cards, strings, or tuples.
+        """
+        old_top_card = Card.get(old_top_card)
+        new_top_card = Card.get(new_top_card)
+        assert old_top_card in self._tableau
+        assert new_top_card.goes_on_top_of(old_top_card)
+        assert new_top_card not in self._tableau
+        self._tableau[new_top_card] = self._tableau[old_top_card] + new_top_card,
+        del self._tableau[old_top_card]
+
+    def _moves_on_a_pile(self, card):
         """Return a list of (Tableau, move) pairs resulting in placing this
         card (Card, string, or tuple) on a pile.
         """
@@ -55,9 +75,8 @@ class Tableau(object):
         for top_card in self._tableau:
             if card.goes_on_top_of(top_card):
                 tableau = deepcopy(self)
-                tableau._tableau[card] = tableau._tableau[top_card] + (card,)
-                del tableau._tableau[top_card]
-                rtn.append(tableau)
+                tableau._put_on_pile(top_card, card)
+                rtn.append((tableau, 'Put %s on top of %s.' % (card, top_card)))
 
         return rtn
 
@@ -65,7 +84,7 @@ class Tableau(object):
         """Return (tableau, move) pairs resulting from placing this card
         in the tableau. card can be a string, tuple, or Card.
         """
-        return self._place_on_a_pile(card) + self._place_in_new_pile(card)
+        return self._moves_on_a_pile(card) + self._moves_in_new_pile(card)
 
     def top_cards(self):
         """Return the set of cards that are on the top of each pile."""
