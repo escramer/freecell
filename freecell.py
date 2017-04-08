@@ -398,7 +398,20 @@ class FreeCellState(object):
         """Return a list of (state, move, cost) tuples from moving cards from
         the foundations to the free cells.
         """
-        return [] #todo
+        if len(self._freecells) == NUM_FREECELLS:
+            return []
+
+        rtn = []
+
+        for suit, rank in enumerate(self._foundations):
+            if rank != 0:
+                state = deepcopy(self)
+                state._foundations[suit] -= 1
+                card = Card.get((rank, suit))
+                state._freecells.add(card)
+                rtn.append((state, 'Put %s in a free cell.' % card, 1))
+
+        return rtn
 
     def __hash__(self):
         return hash(
