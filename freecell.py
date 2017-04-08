@@ -384,7 +384,15 @@ class FreeCellState(object):
         """Return a list of (state, move, cost) tuples from moving cards from
         the free cells to the foundations.
         """
-        return [] #todo
+        rtn = []
+        for card in self._freecells:
+            if card.rank == self._foundations[card.suit] + 1:
+                state = deepcopy(self)
+                state._foundations[card.suit] = card.rank
+                state._freecells.remove(card)
+                rtn.append((state, 'Put %s in its foundation.' % card, 1))
+
+        return rtn
 
     def _foundations_to_free(self):
         """Return a list of (state, move, cost) tuples from moving cards from
