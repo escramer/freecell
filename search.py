@@ -1,6 +1,8 @@
 """Module for search algorithms"""
 
 from Queue import PriorityQueue
+from logging import info
+from time import time
 
 class _Node:
     """Represents a node in the search problem."""
@@ -120,12 +122,21 @@ def _search(problem, fringe_cls):
     closed = set()
     fringe = fringe_cls()
     fringe.push(_Node(problem.initial_state(), problem))
+    nodes_popped = 0
+    last_nodes_popped = 0
+    last_second = int(time.time())
 
     while True:
         if fringe.is_empty():
             return None
 
         node = fringe.pop()
+        nodes_popped += 1
+        crnt_second = int(time.time())
+        if crnt_second > last_second:
+            info('%s nodes (+%s nodes)' % (nodes_popped, nodes_popped - last_nodes_popped))
+            last_second = crnt_second
+            last_nodes_popped = nodes_popped
         state = node.get_state()
         if problem.is_goal(state):
             return _move_seq(node)
