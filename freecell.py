@@ -151,7 +151,7 @@ class Tableau(object):
 
     def _put_in_new_pile(self, card):
         """Place this card (Card, string, or tuple) in a new pile."""
-        assert not self.is_full()
+        assert len(self._tableau) < NUM_PILES
         card = Card.get(card)
         assert card not in self._tableau
         self._tableau[card] = (card,)
@@ -443,11 +443,11 @@ class FreeCellState(object):
         return rtn
 
     def __hash__(self):
-        return hash(
+        return hash((
             frozenset(self._freecells), 
             tuple(self._foundations), 
             frozenset(self._tableau.piles())
-        )
+        ))
 
     def __eq__(self, other):
         return self._foundations == other._foundations and \
