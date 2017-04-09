@@ -36,6 +36,10 @@ class Tableau(object):
         """Item should be a card."""
         return item in self._tableau
 
+    def piles(self):
+        """Return the set of piles (tuples)."""
+        return set(self._tableau.itervalues())
+
     def internal_moves(self):
         """Return a list of (tableau, move) pairs of moves within the tableau.
         """
