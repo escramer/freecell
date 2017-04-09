@@ -6,7 +6,7 @@ from copy import deepcopy, copy
 import csv
 import argparse
 from itertools import permutations
-from logging import info
+import logging
 
 from search import Problem, astar
 
@@ -20,7 +20,7 @@ NUM_FREECELLS = 4
 class Tableau(object):
     def __init__(self, filename):
         """Initialize the tableau from this csv."""
-        info('Reading in the csv')
+        logging.info('Reading in the csv')
         self._tableau = {}
         made_cards = set()
         with open(filename) as file_obj:
@@ -46,7 +46,7 @@ class Tableau(object):
                 msg += '%s\n' % card
             raise Exception(msg)
 
-        info('Done reading the csv')
+        logging.info('Done reading the csv')
 
     def __deepcopy__(self, _):
         rtn = copy(self)
@@ -531,6 +531,7 @@ def main():
     ))
     args = parser.parse_args()
 
+    logging.basicConfig(level=logging.INFO)
     freecell_prob = FreeCellProblem(args.filename)
     for move in astar(freecell_prob):
         print move
