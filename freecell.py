@@ -115,7 +115,7 @@ class Tableau(object):
         assert old_top_card in self._tableau
         assert new_top_card.goes_on_top_of(old_top_card)
         assert new_top_card not in self._tableau
-        self._tableau[new_top_card] = self._tableau[old_top_card] + new_top_card,
+        self._tableau[new_top_card] = self._tableau[old_top_card] + (new_top_card,)
         del self._tableau[old_top_card]
 
     def _moves_on_a_pile(self, card):
