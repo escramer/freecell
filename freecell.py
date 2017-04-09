@@ -505,7 +505,7 @@ def main():
     ))
     args = parser.parse_args()
 
-    freecell_prob = FreeCell(args.filename)
+    freecell_prob = FreeCellProblem(args.filename)
     for move in astar(freecell_prob):
         print move
 
