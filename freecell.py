@@ -446,7 +446,7 @@ class FreeCellState(object):
         return hash(
             frozenset(self._freecells), 
             tuple(self._foundations), 
-            frozenset(self._tableau.values())
+            frozenset(self._tableau.piles())
         )
 
     def __eq__(self, other):
