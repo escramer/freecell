@@ -124,7 +124,7 @@ def _search(problem, fringe_cls):
     fringe.push(_Node(problem.initial_state(), problem))
     nodes_popped = 0
     last_nodes_popped = 0
-    last_second = int(time.time())
+    last_second = int(time())
 
     while True:
         if fringe.is_empty():
@@ -132,7 +132,7 @@ def _search(problem, fringe_cls):
 
         node = fringe.pop()
         nodes_popped += 1
-        crnt_second = int(time.time())
+        crnt_second = int(time())
         if crnt_second > last_second:
             info('%s nodes (+%s nodes)' % (nodes_popped, nodes_popped - last_nodes_popped))
             last_second = crnt_second
