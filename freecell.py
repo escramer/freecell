@@ -6,6 +6,7 @@ from copy import deepcopy, copy
 import csv
 import argparse
 from itertools import permutations
+from logging import info
 
 from search import Problem, astar
 
@@ -19,6 +20,7 @@ NUM_FREECELLS = 4
 class Tableau(object):
     def __init__(self, filename):
         """Initialize the tableau from this csv."""
+        info('Reading in the csv')
         self._tableau = {}
         made_cards = set()
         with open(filename) as file_obj:
@@ -43,6 +45,8 @@ class Tableau(object):
             for card in unmade_cards:
                 msg += '%s\n' % card
             raise Exception(msg)
+
+        info('Done reading the csv')
 
     def __deepcopy__(self, _):
         rtn = copy(self)
@@ -211,19 +215,19 @@ class Card:
 
     
     @classmethod
-    def get(cls, info):
-        """Return a Card where info describes the card.
+    def get(cls, desc):
+        """Return a Card where desc describes the card.
 
-        info can be a Card (it'll just be returned), (rank, suit)
+        desc can be a Card (it'll just be returned), (rank, suit)
         tuple, or a 2-character card string.
         """
-        if isinstance(info, Card):
-            return info
-        if isinstance(info, tuple):
-            return cls._from_ranksuit(*info)
-        if isinstance(info, str):
-            return cls._from_str(info)
-        raise Exception('What card is this?: %s' % info)
+        if isinstance(desc, Card):
+            return desc
+        if isinstance(desc, tuple):
+            return cls._from_ranksuit(*desc)
+        if isinstance(desc, str):
+            return cls._from_str(desc)
+        raise Exception('What card is this?: %s' % desc)
 
     
     @classmethod
