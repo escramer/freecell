@@ -317,7 +317,7 @@ class FreeCellState(object):
             for suit, top_rank in enumerate(state._foundations):
                 if top_rank - min_rank <= 1 and top_rank < MAX_RANK:
                     card_to_find = Card.get((top_rank+1, suit))
-                    if card_to_find in state._freecells or 
+                    if card_to_find in state._freecells or \
                      card_to_find in state._tableau:
                         change = True
                         if card_to_find in state._freecells:
