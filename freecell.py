@@ -32,6 +32,10 @@ class Tableau(object):
         rtn._tableau = dict(rtn._tableau)
         return rtn
 
+    def __contains__(self, item):
+        """Item should be a card."""
+        return item in self._tableau
+
     def internal_moves(self):
         """Return a list of (tableau, move) pairs of moves within the tableau.
         """
@@ -305,7 +309,28 @@ class FreeCellState(object):
         """Return a (state, move, cost) tuple for obvious moves. If there
         are no obvious moves, return None.
         """
-        return None #todo
+        moves = []
+        state = deepcopy(self)
+        while True:
+            change = False
+            min_rank = min(state._foundations)
+            for suit, top_rank in enumerate(state._foundations):
+                if top_rank - min_rank <= 1 and top_rank < MAX_RANK:
+                    card_to_find = Card.get((top_rank+1, suit))
+                    if card_to_find in state._freecells or 
+                     card_to_find in state._tableau:
+                        change = True
+                        if card_to_find in state._freecells:
+                            state._freecells.remove(card_to_find)
+                        else:
+                            state._tableau = state._tableau.remove(card_to_find)
+                        state._foundations[suit] = card_to_find.rank
+                        moves.append('Put %s in its foundation.' % card_to_find)
+            if not change:
+                break
+
+        return (state, '\n'.join(moves), len(moves)) if moves else None
+            
 
     def _tableau_to_foundations(self):
         """Return a list of (state, move, cost) tuples from the tableau to the
