@@ -20,12 +20,29 @@ class Tableau(object):
     def __init__(self, filename):
         """Initialize the tableau from this csv."""
         self._tableau = {}
+        made_cards = set()
         with open(filename) as file_obj:
             for row in csv.reader(file_obj):
                 pile = []
                 for card_str in row:
-                    pile.append(Card.get(card_str))
+                    card = Card.get(card_str)
+                    if card in made_cards:
+                        raise Exception('Duplicate card: %s' % card)
+                    pile.append(card)
+                    made_cards.add(card)
                 self._tableau[pile[-1]] = tuple(pile)
+
+        if len(self._tableau) != NUM_PILES:
+            raise Exception(
+                'Incorrect number of piles: %s' % len(self._tableau)
+            )
+
+        unmade_cards = Card.missing_cards()
+        if unmade_cards:
+            msg = 'These cards were not in the csv:\n'
+            for card in unmade_cards:
+                msg += '%s\n' % card
+            raise Exception(msg)
 
     def __deepcopy__(self, _):
         rtn = copy(self)
