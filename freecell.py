@@ -123,6 +123,7 @@ class Tableau(object):
         card (Card, string, or tuple) on a pile.
         """
         rtn = []
+        card = Card.get(card)
         for top_card in self._tableau:
             if card.goes_on_top_of(top_card):
                 tableau = deepcopy(self)
